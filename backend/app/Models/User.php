@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -11,25 +12,10 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    
-            public function workerProfile(): HasOne
-        {
-            return $this->hasOne(WorkerProfile::class);
-        }
-
-        public function jobs(): HasMany
-        {
-            return $this->hasMany(Job::class, 'client_id');
-        }
-
-        public function jobRequests(): HasMany
-        {
-            return $this->hasMany(JobRequest::class, 'worker_id');
-        }
-
 
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
+    use HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -51,6 +37,22 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+        public function workerProfile(): HasOne
+        {
+            return $this->hasOne(WorkerProfile::class);
+        }
+
+        public function jobs(): HasMany
+        {
+            return $this->hasMany(Job::class, 'client_id');
+        }
+
+        public function jobRequests(): HasMany
+        {
+            return $this->hasMany(JobRequest::class, 'worker_id');
+        }
+
 
     /**
      * Get the attributes that should be cast.
